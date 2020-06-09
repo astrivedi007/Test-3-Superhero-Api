@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <link rel="stylesheet" href="master.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>this is the info</h1>
+            <img id = 'imageId'>
+        </div>
+        <script>
+          var abcFromUrl = window.location.search.substr(6);
+          console.log(abcFromUrl);
+          // var data = fetch();
+          var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
+          targetUrl = 'https://superheroapi.com/api/2554361714879560/'+abcFromUrl
+          fetch(proxyUrl + targetUrl)
+          .then(blob => blob.json())
+          .then(data => {
+            // console.table(data);
+            document.getElementById("imageId").src = (data.image.url);
+            console.log(data.image.url);
+            return data;
+          })
+          .catch(e => {
+            console.log(e);
+            return e;
+          });
+        </script>
+    </body>
+</html>
