@@ -9,12 +9,80 @@
     </head>
     <body>
         <div class="container">
-            <h1>&#x2728;Harry Potter Characters &#x2728;</h1>
-            <div id="searchWrapper">
-
-            </div>
+            <h1>&#x2728;favourites &#x2728;</h1>
             <ul id="charactersList"></ul>
         </div>
-        <script src="script.js"></script>
+        <script >
+          let hpCharacters = [];
+          var retrievedData = localStorage.getItem("items");
+          var favourites = JSON.parse(retrievedData);
+          console.log(favourites);
+          var i;
+          const loadCharacters = async (a) => {
+              try {
+                  if(a==undefined){
+                    a="a";
+                  }
+                  const res = await fetch('https://www.superheroapi.com/api.php/2554361714879560/'+a);
+                  hpCharacters = await res.json();
+                  // displayCharacters(hpCharacters.results);
+                  console.log(hpCharacters);
+                  var x = [hpCharacters];
+                  displayCharacters(x);
+                  // return hpCharacters;
+                } catch (err) {
+                  console.error(err);
+              }
+          };
+          function render(){
+              for (i = 0; i < favourites.length; i++) {
+              // const res = fetch('https://www.superheroapi.com/api.php/2554361714879560/'+favourites[i]);
+              // var data =
+              console.log(loadCharacters(favourites[i]));
+              // addAnother(data);
+              // hpCharacters = res.json();
+              // console.log(res);
+            }
+          }
+          Array.prototype.remove = function() {
+              var what, a = arguments, L = a.length, ax;
+              while (L && this.length) {
+                  what = a[--L];
+                  while ((ax = this.indexOf(what)) !== -1) {
+                      this.splice(ax, 1);
+                  }
+              }
+              return this;
+          };
+
+          function removeFromFavourites(id) {
+            // favourifavourites.filter(e => e !== id);
+            // var favourites =favourites.filter(function(e) { return e !== id });
+            favourites.remove(id);
+            render();
+            // location.reload();
+            // charactersList = [];
+            document.getElementById("charactersList").innerHTML = "";
+            return;
+          }
+
+          const displayCharacters = (characters) => {
+              const htmlString = characters
+                  .map((character) => {
+                      return `
+                      <li class="character">
+                          <h2><a id='anchor-tag' href="info.html?abc=@${character.id}" data-heroId="${character.id}">${character.name}</a></h2>
+                          <button type="button" Id = "${character.id}" onclick="removeFromFavourites(${character.id})">
+                            Remove From Favourites
+                          </button>
+                          <img src="${character.image.url}"></img>
+                      </li>
+                  `;
+                  })
+                  .join('');
+              charactersList.insertAdjacentHTML('beforeend', htmlString);
+          };
+          render();
+        </script>
     </body>
 </html>

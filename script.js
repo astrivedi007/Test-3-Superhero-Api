@@ -12,7 +12,7 @@ const loadCharacters = async (a) => {
         hpCharacters = await res.json();
         displayCharacters(hpCharacters.results);
         console.log(hpCharacters.results);
-    } catch (err) {
+      } catch (err) {
         console.error(err);
     }
 };
@@ -20,13 +20,34 @@ searchBar.addEventListener('keyup', (e) => {
     const searchString = e.target.value;
     loadCharacters(searchString);
 });
+
+const favourites = [];
+// let uniqueFavourites = [];
+
+
+function addToFavourites(id) {
+  favourites.push(id);
+  // uniqueFavourites = [...new Set(favourites)];
+  document.getElementById(id).disabled = true;
+  return;
+}
+
+
+
+function displayFavourites(){
+  localStorage.setItem("items", JSON.stringify(favourites));
+  return;
+}
+
 const displayCharacters = (characters) => {
     const htmlString = characters
         .map((character) => {
             return `
             <li class="character">
                 <h2><a id='anchor-tag' href="info.html?abc=@${character.id}" data-heroId="${character.id}">${character.name}</a></h2>
-                <button type="button">Add To Favourites</button>
+                <button type="button" Id = "${character.id}" onclick="addToFavourites(${character.id})">
+                  Add To Favourites
+                </button>
                 <img src="${character.image.url}"></img>
             </li>
         `;
