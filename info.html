@@ -9,6 +9,7 @@
     </head>
     <body>
         <div class="container">
+            <h3><a href="favourites.html" onclick="displayFavourites()">My Favourites</a></h3>
             <h1>this is the info</h1>
             <img id = 'imageId'>
         </div>
@@ -30,6 +31,11 @@
             console.log(e);
             return e;
           });
+
+          function displayFavourites(){
+            localStorage.setItem("items", JSON.stringify(favourites));
+            return;
+          }
         </script>
     </body>
 </html>
